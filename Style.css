@@ -1,5 +1,4 @@
 *{margin:0; padding:0}
 body{padding:20px; margin: auto}
-input{width:90%; height :50px}
 section{width :100vw}
-#input-tag{padding: 10px; height:auto}
+input{padding: 10px; width:90vw; height:auto}
