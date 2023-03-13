@@ -1,4 +1,4 @@
-const downloadBtn = document.querrySelector('#downloadBtn');
+const downloadBtn = document.querrySelector('#download-btn');
 
 function downloadVideo() {
   const urlTag = document.querrySelector('#url-tag');
