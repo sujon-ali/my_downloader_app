@@ -1,31 +1,26 @@
-const ffmpeg = require('ffmpeg.js');
+const downloadBtn = document.querrySelector('#downloadBtn');
 
-const downloadVideo = async (url) => {
-  const response = await fetch(url);
-  const buffer = await response.arrayBuffer();
-  const result = await ffmpeg({
-    MEMFS: [{ name: "video.mp4", data: new Uint8Array(buffer) }],
-    arguments: ["-i", "video.mp4", "output.mp4"], 
-    // Replace with desired output file name and format
-    print: function(data) { console.log(data); },
-    printErr: function(data) { console.error(data); },
-    });
-  const output = result.MEMFS[0];
-  const urlObject = URL.createObjectURL(new Blob([output.data]));
-  const a = document.createElement('a');
-  a.href = urlObject;
-  a.download = 'output.mp4'; 
-  // Replace with desired file name and extension
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(urlObject);
-};
-//downloadVideo('https://example.com/video.mp4');
-//Button Click Call
-const downloadButton = document.getElementById('download-btn'); // Replace with the ID of your download button
-downloadButton.addEventListener('click', async () => {
-  const urlTag = document.getElementById('url-tag');
-  const url = `${urlTag.value}`;// Replace with your video URL
-  await downloadVideo(url);
-});
+function downloadVideo() {
+  const urlTag = document.querrySelector('#url-tag');
+  const videoUrl = `${urlTag.value}`;
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', videoUrl, true);
+  xhr.responseType = 'blob';
+  xhr.onload = function() {
+    var urlCreator = window.URL || window.webkitURL;
+    var videoUrl = urlCreator.createObjectURL(this.response);
+    var tag = document.createElement('a');
+    tag.href = videoUrl;
+    tag.target = '_blank';
+    tag.download = 'sample.mp4';
+    document.body.appendChild(tag);
+    tag.click();
+    document.body.removeChild(tag);
+  };
+  xhr.onerror = err => {
+    alert('Failed to download video!');
+  };
+  xhr.send();
+}
+
+downloadBtn.addEventListener('click', downloadVideo);
